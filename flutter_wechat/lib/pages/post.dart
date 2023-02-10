@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wechat_assets_picker/wechat_assets_picker.dart';
 
 import '../utils/config.dart';
+import '../widgets/gallery.dart';
 
 class PostEditPage extends StatefulWidget {
   const PostEditPage({super.key});
@@ -61,20 +62,30 @@ class _PostEditPageState extends State<PostEditPage> {
   }
 
   // 显示图片项
-  Container _buildPhotoItem(AssetEntity asset, double width) {
-    return Container(
-      // 圆角行为
-      clipBehavior: Clip.antiAlias,
-      // 圆角弧度
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3),
-      ),
-      child: AssetEntityImage(
-        asset,
-        width: width,
-        height: width,
-        fit: BoxFit.cover,
-        isOriginal: false, // 非原图，减小刷新
+  Widget _buildPhotoItem(AssetEntity asset, double width) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return GalleryWidget(
+            initialIndex: _selectedAssets.indexOf(asset),
+            items: _selectedAssets,
+          );
+        }));
+      },
+      child: Container(
+        // 圆角行为
+        clipBehavior: Clip.antiAlias,
+        // 圆角弧度
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(3),
+        ),
+        child: AssetEntityImage(
+          asset,
+          width: width,
+          height: width,
+          fit: BoxFit.cover,
+          isOriginal: false, // 非原图，减小刷新
+        ),
       ),
     );
   }
